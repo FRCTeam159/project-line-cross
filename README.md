@@ -1,6 +1,6 @@
 # Project Line Cross
 
-Welcome to Project Line Cross, a public Git repository committed to ensuring that every robot will be able to cross the line in autonomous mode during the 2018 FRC game, FIRST Powerup.
+Welcome to Project Line Cross, a public Git repository started by 1619 and 319 that is committed to ensuring that every robot will be able to cross the line in autonomous mode during the 2018 FRC game, FIRST Powerup.
 
 The code committed here will be free as in freedom, and anyone can submit a PR in any language provided that it follows the following guidelines:
 
