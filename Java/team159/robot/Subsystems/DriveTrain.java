@@ -7,13 +7,15 @@ import org.usfirst.frc.team.robot.Commands.DriveStraight;
 import org.usfirst.frc.team.robot.Robot;
 import org.usfirst.frc.team.robot.RobotMap;
 
-public class DriveTrain extends Subsystem {
+public class DriveTrain extends Subsystem implements MotorSafety {
 
 //     Talon SRX objects
     private WPI_TalonSRX frontLeft;
     private WPI_TalonSRX frontRight;
     private WPI_TalonSRX backLeft;
     private WPI_TalonSRX backRight;
+
+    private MotorSafetyHelper safetyHelper = new MotorSafetyHelper(this);
 
 //     Used to invert direction if it is incorrect
     private boolean directionInverted = false;
@@ -36,12 +38,6 @@ public class DriveTrain extends Subsystem {
 //         Configures front left and back right Talon SRXs as slaves to the other Talon SRXs
         frontLeft.set(ControlMode.Follower, RobotMap.TALON_SRX_BACK_LEFT);
         backRight.set(ControlMode.Follower, RobotMap.TALON_SRX_FRONT_RIGHT);
-
-//         Enables the motor safety helpers on all the Talon SRXs
-        frontLeft.setSafetyEnabled(true);
-        frontRight.setSafetyEnabled(true);
-        backLeft.setSafetyEnabled(true);
-        backRight.setSafetyEnabled(true);
     }
 
     public void disable(){
@@ -59,5 +55,46 @@ public class DriveTrain extends Subsystem {
 //         Sets the master Talon SRXs
         frontRight.set(-speed);
         backLeft.set(speed);
+    }
+
+
+//    Motor Safety functions
+    @Override
+    public void setExpiration(double timeout) {
+        safetyHelper.setExpiration(timeout);
+    }
+
+    @Override
+    public double getExpiration() {
+        return safetyHelper.getExpiration();
+    }
+
+    @Override
+    public boolean isAlive() {
+        return safetyHelper.isAlive();
+    }
+
+    @Override
+    public void stopMotor() {
+        frontLeft.stopMotor();
+        frontRight.stopMotor();
+        backLeft.stopMotor();
+        backRight.stopMotor();
+        safetyHelper.feed();
+    }
+
+    @Override
+    public void setSafetyEnabled(boolean enabled) {
+        safetyHelper.setSafetyEnabled(enabled);
+    }
+
+    @Override
+    public boolean isSafetyEnabled() {
+        return safetyHelper.isSafetyEnabled();
+    }
+
+    @Override
+    public String getDescription() {
+        return "Robot Drive";
     }
 }
